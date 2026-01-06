@@ -8,11 +8,31 @@ export default function Login() {
       password: ''
     })
 
+    const [didEdit, setDidEdit] = useState({
+      email: false,
+      password: false
+    })
+
+    const emailIsInvalid = didEdit.email && !enteredValues.email.includes('@')
+
   function handleInputChange(identifier, event) {
     setEnteredValues(prevValues => ({
       ...prevValues,
       // Javascript feature that allows you to dinamically target and send a property of a object.
       [identifier]: event.target.value
+    }))
+
+    // Whenever the user starts typing again, the error disappears.
+    setDidEdit(prevEdit => ({
+      ...prevEdit,
+      [identifier]: false
+    }))
+  }
+
+  function handleInputBlur(identifier) {
+    setDidEdit(prevEdit => ({
+      ...prevEdit,
+      [identifier]: true
     }))
   }
 
@@ -30,12 +50,27 @@ export default function Login() {
       <div className="control-row">
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" onChange={() => handleInputChange('email', event)} value={enteredValues.email} />
+          <input 
+          id="email" 
+          type="email" 
+          name="email" 
+          onBlur={() => handleInputBlur('email')}
+          onChange={() => handleInputChange('email', event)} 
+          value={enteredValues.email} 
+          />
+          <div className="control-error">{emailIsInvalid && <p>Please enter a valid email address.</p>}</div>
         </div>
 
         <div className="control no-margin">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" onChange={() => handleInputChange('password', event)} value={enteredValues.password}/>
+          <input 
+          id="password" 
+          type="password" 
+          name="password" 
+          onBlur={() => handleInputBlur('password')}
+          onChange={() => handleInputChange('password', event)} 
+          value={enteredValues.password}
+          />
         </div>
       </div>
 
