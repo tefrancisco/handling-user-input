@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react'
 
 export default function Login() {
+  const [emailIsInvalid, setEmailIsInvalid] = useState(false)
+
   const email = useRef()
   const password = useRef()
 
@@ -13,7 +15,18 @@ export default function Login() {
       password: password.current.value
     }
 
-    console.log(user)
+    const emailIsValid = user.email.includes('@')
+
+    if (!emailIsValid) {
+      setEmailIsInvalid(true);
+      // Return to stop any HTTP requests after the validation went wrong.
+      return;
+    }
+
+    setEmailIsInvalid(false)
+
+    console.log('Data sent.')
+
   }
 
   return (
@@ -24,6 +37,7 @@ export default function Login() {
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" ref={email}/>
+          <div className="control-error">{emailIsInvalid && <p>Please enter a valid email address.</p>}</div>
         </div>
 
         <div className="control no-margin">
