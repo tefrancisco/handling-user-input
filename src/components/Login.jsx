@@ -1,6 +1,12 @@
 export default function Login() {
+  function handleSubmit(event) {
+    // Stops the default behaviour of the browser of creating and sending an HTTP request automatically.
+    event.preventDefault()
+    console.log('Subtmitted')
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2>Login</h2>
 
       <div className="control-row">
